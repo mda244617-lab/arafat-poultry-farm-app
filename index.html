@@ -42,7 +42,6 @@
                 <p id="pin-error" class="text-xs text-red-600 font-semibold hidden">ভুল পিন কোড! আবার চেষ্টা করুন।</p>
                 <button type="submit" class="w-full farm-gradient text-white font-bold py-2.5 rounded-xl shadow hover:opacity-95">অ্যাপ আনলক করুন</button>
             </form>
-            <p class="text-[11px] text-gray-400">ডিফল্ট পিন: ১২৩৪ (কোডের APP_PIN পরিবর্তন করে নিন)</p>
         </div>
     </div>
 
@@ -356,9 +355,9 @@
         // ==========================================
         // আপনার Supabase URL, Anon Key এবং পিন কোড
         // ==========================================
-        const SUPABASE_URL = 'https://eydxejdtafyrvltbmuvt.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_rYFsWTVll7aBk2KZLau1Lw_NhqXATCP';
-        const APP_PIN = '2010';
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        const APP_PIN = '1234';
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentBatch = null;

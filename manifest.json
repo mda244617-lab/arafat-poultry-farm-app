@@ -1,0 +1,22 @@
+{
+  "name": "আরাফাত পোল্ট্রি ফার্ম",
+  "short_name": "আরাফাত ফার্ম",
+  "description": "আপনার খামার, আপনার হিসাব",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#e7f6e9",
+  "theme_color": "#1b5e20",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

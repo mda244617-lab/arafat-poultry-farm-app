@@ -3,18 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#1b4332">
+    <meta name="theme-color" content="#1b5e20">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <title>আরাফাত পোল্ট্রি ফার্ম - স্মার্ট খামার ম্যানেজমেন্ট</title>
+    <title>আরাফাত পোল্ট্রি ফার্ম - আপনার খামার, আপনার হিসাব</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Hind Siliguri', sans-serif; background-color: #f3f6f1; }
-        .farm-gradient { background: linear-gradient(135deg, #1b4332 0%, #2d6a4f 100%); }
-        .tab-active { border-bottom: 3px solid #eab308; color: #1b4332; font-weight: 700; background-color: #f0fdf4; }
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(163, 230, 53, 0.24), transparent 45%),
+                radial-gradient(circle at bottom right, rgba(22, 163, 74, 0.16), transparent 50%),
+                linear-gradient(180deg, #e7f6e9 0%, #f3f9f2 55%, #eaf5ea 100%);
+            min-height: 100vh;
+        }
+        .farm-gradient {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 55%, #388e3c 100%);
+        }
+        .farm-soft-card {
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(244, 251, 244, 0.96) 100%);
+            border: 1px solid #b7e4c7;
+            box-shadow: 0 8px 24px -8px rgba(27, 94, 32, 0.12);
+        }
+        .tab-active {
+            border-bottom: 3px solid #1b5e20;
+            color: #14532d;
+            font-weight: 700;
+            background-color: #dcfce7;
+            border-radius: 12px 12px 0 0;
+        }
         #print-report { display: none; }
         @media print {
             .no-print { display: none !important; }
@@ -30,123 +50,131 @@
 
     <!-- পিন লক স্ক্রিন -->
     <div id="pin-lock-screen" class="fixed inset-0 z-[100] farm-gradient flex items-center justify-center p-4 no-print">
-        <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 text-center space-y-4">
-            <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-24 h-24 mx-auto rounded-full object-cover shadow-md border-2 border-green-700">
+        <div class="bg-white/95 backdrop-blur w-full max-w-sm rounded-3xl shadow-2xl border-2 border-lime-300 p-6 text-center space-y-4">
+            <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-24 h-24 mx-auto rounded-full object-cover shadow-md border-4 border-green-700">
             <div>
                 <h2 class="text-xl font-bold text-green-950">আরাফাত পোল্ট্রি ফার্ম</h2>
-                <p class="text-xs text-gray-500 mt-1">খামারের হিসাব দেখতে ৪-সংখ্যার পিন দিন</p>
+                <span class="inline-block mt-1 bg-green-700 text-white text-xs font-semibold px-3.5 py-0.5 rounded-full">আপনার খামার, আপনার হিসাব</span>
+                <p class="text-xs text-gray-500 mt-2">খামারের হিসাব দেখতে ৪-সংখ্যার পিন দিন</p>
             </div>
             <form onsubmit="unlockApp(event)" class="space-y-3">
                 <input type="password" id="pin-input" inputmode="numeric" maxlength="6" placeholder="পিন কোড লিখুন" required
-                    class="w-full text-center text-2xl tracking-[0.4em] font-bold border-2 border-green-200 focus:border-green-600 rounded-xl py-2.5 focus:outline-none">
+                    class="w-full text-center text-2xl tracking-[0.4em] font-bold border-2 border-green-200 focus:border-green-700 rounded-2xl py-2.5 focus:outline-none bg-green-50/50">
                 <p id="pin-error" class="text-xs text-red-600 font-semibold hidden">ভুল পিন কোড! আবার চেষ্টা করুন।</p>
-                <button type="submit" class="w-full farm-gradient text-white font-bold py-2.5 rounded-xl shadow hover:opacity-95">অ্যাপ আনলক করুন</button>
+                <button type="submit" class="w-full farm-gradient text-white font-bold py-3 rounded-full shadow-md hover:opacity-95 transition">অ্যাপ আনলক করুন</button>
             </form>
         </div>
     </div>
 
     <!-- হেডার -->
-    <header class="farm-gradient text-white p-4 shadow-lg sticky top-0 z-50 no-print">
+    <header class="farm-gradient text-white p-3.5 sm:p-4 shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-2.5">
-                <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-12 h-12 rounded-full object-cover border-2 border-amber-400 shadow">
+                <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-12 h-12 rounded-full object-cover border-2 border-lime-300 shadow">
                 <div>
-                    <h1 class="text-xl font-bold leading-tight">আরাফাত পোল্ট্রি ফার্ম</h1>
-                    <p id="header-subtitle" class="text-xs text-green-200">স্মার্ট খামার, সফল খামারি...</p>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg sm:text-xl font-bold leading-tight">আরাফাত পোল্ট্রি ফার্ম</h1>
+                        <span id="net-status-badge" class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-lime-300 text-green-950">অনলাইন</span>
+                    </div>
+                    <p id="header-subtitle" class="text-xs text-lime-200">আপনার খামার, আপনার হিসাব</p>
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <select id="batchSelector" onchange="loadBatchData()" class="bg-green-950 text-white text-sm rounded-lg px-3 py-2 border border-green-500 focus:outline-none">
+                <select id="batchSelector" onchange="loadBatchData()" class="bg-green-950/90 text-white text-xs sm:text-sm rounded-full px-3 py-2 border border-lime-400/70 focus:outline-none">
                     <option value="">ব্যাচ লোড হচ্ছে...</option>
                 </select>
-                <button onclick="prepareAndPrint()" title="বিস্তারিত রিপোর্ট প্রিন্ট করুন" class="bg-amber-500 hover:bg-amber-600 text-gray-950 font-bold text-xs px-3 py-2 rounded-lg shadow">🖨️ প্রিন্ট</button>
-                <button onclick="lockApp()" title="অ্যাপ লক করুন" class="bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-3 py-2 rounded-lg">🔒 লক</button>
+                <button onclick="syncOfflineQueue()" id="sync-btn" title="অফলাইন ডাটা সিঙ্ক করুন" class="bg-lime-200 hover:bg-lime-300 text-green-950 font-bold text-xs px-3 py-2 rounded-full shadow hidden">🔄 সিঙ্ক (০)</button>
+                <button onclick="prepareAndPrint()" title="বিস্তারিত রিপোর্ট প্রিন্ট করুন" class="bg-amber-400 hover:bg-amber-500 text-gray-950 font-bold text-xs px-3 py-2 rounded-full shadow">🖨️ প্রিন্ট</button>
+                <button onclick="lockApp()" title="অ্যাপ লক করুন" class="bg-white/15 hover:bg-white/25 text-white font-bold text-xs px-3 py-2 rounded-full">🔒 লক</button>
             </div>
         </div>
     </header>
 
     <!-- নেভিগেশন ট্যাব -->
-    <nav class="bg-white shadow-sm sticky top-[72px] z-40 overflow-x-auto no-print">
-        <div class="max-w-5xl mx-auto flex justify-between min-w-[520px] text-sm text-gray-600">
-            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="flex-1 py-3 px-2 tab-active">📊 ড্যাশবোর্ড</button>
-            <button onclick="switchTab('daily')" id="tab-daily" class="flex-1 py-3 px-2">📝 দৈনিক লগ</button>
-            <button onclick="switchTab('finance')" id="tab-finance" class="flex-1 py-3 px-2">💰 আয়-ব্যয় ও বাকি</button>
-            <button onclick="switchTab('vaccine')" id="tab-vaccine" class="flex-1 py-3 px-2">💉 ভ্যাকসিন</button>
-            <button onclick="switchTab('batches')" id="tab-batches" class="flex-1 py-3 px-2">🐣 ব্যাচসমূহ</button>
+    <nav class="bg-white/90 backdrop-blur shadow-sm sticky top-[68px] sm:top-[76px] z-40 overflow-x-auto border-b border-green-100 no-print">
+        <div class="max-w-5xl mx-auto flex justify-between min-w-[520px] text-xs sm:text-sm text-gray-700 pt-1 px-2 gap-1">
+            <button onclick="switchTab('dashboard')" id="tab-dashboard" class="flex-1 py-2.5 px-2 tab-active">📊 ড্যাশবোর্ড</button>
+            <button onclick="switchTab('daily')" id="tab-daily" class="flex-1 py-2.5 px-2 rounded-t-xl hover:bg-green-50">📝 দৈনিক লগ</button>
+            <button onclick="switchTab('finance')" id="tab-finance" class="flex-1 py-2.5 px-2 rounded-t-xl hover:bg-green-50">💰 আয়-ব্যয় ও বাকি</button>
+            <button onclick="switchTab('vaccine')" id="tab-vaccine" class="flex-1 py-2.5 px-2 rounded-t-xl hover:bg-green-50">💉 ভ্যাকসিন</button>
+            <button onclick="switchTab('batches')" id="tab-batches" class="flex-1 py-2.5 px-2 rounded-t-xl hover:bg-green-50">🐣 ব্যাচসমূহ</button>
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto p-4 space-y-5 no-print">
+    <main class="max-w-5xl mx-auto p-3.5 sm:p-5 space-y-5 no-print">
 
         <!-- ১. ড্যাশবোর্ড -->
         <section id="sec-dashboard" class="space-y-4">
-            <div id="alert-banner" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-r-lg text-sm text-red-800 font-medium"></div>
+            <div id="alert-banner" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-2xl text-sm text-red-800 font-medium shadow-sm"></div>
 
-            <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl flex flex-wrap justify-between items-center gap-3">
-                <div>
-                    <span class="text-xs text-amber-800 font-semibold">বর্তমান ব্যাচের বয়স</span>
-                    <h2 id="dash-age" class="text-2xl font-bold text-amber-950">০ দিন</h2>
-                    <span id="dash-breed-badge" class="inline-block mt-1 text-xs bg-green-700 text-white px-2.5 py-0.5 rounded-full">জাত: -</span>
+            <div class="farm-soft-card p-4 sm:p-5 rounded-3xl flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center gap-3">
+                    <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-12 h-12 rounded-full object-cover border-2 border-green-600 shadow-sm shrink-0">
+                    <div>
+                        <span class="text-xs text-green-800 font-semibold">বর্তমান ব্যাচের বয়স</span>
+                        <h2 id="dash-age" class="text-2xl font-bold text-green-950">০ দিন</h2>
+                        <span id="dash-breed-badge" class="inline-block mt-1 text-xs bg-green-700 text-white px-3 py-0.5 rounded-full">জাত: -</span>
+                    </div>
                 </div>
                 <div class="text-right">
-                    <span class="text-xs text-amber-800 font-semibold">মৃত্যুর হার (Mortality %)</span>
+                    <span class="text-xs text-green-800 font-semibold">মৃত্যুর হার (Mortality %)</span>
                     <h2 id="dash-mortality-rate" class="text-2xl font-bold text-red-600">০.০%</h2>
-                    <span id="dash-status-badge" class="inline-block mt-1 text-xs bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full">অবস্থা: Active</span>
+                    <span id="dash-status-badge" class="inline-block mt-1 text-xs bg-lime-200 text-green-950 font-semibold px-3 py-0.5 rounded-full">অবস্থা: Active</span>
                 </div>
             </div>
 
             <!-- মূল পরিসংখ্যান কার্ড -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                    <p class="text-xs text-gray-500">জীবিত মুরগি</p>
+                <div class="farm-soft-card p-4 rounded-2xl">
+                    <p class="text-xs text-gray-600 font-medium">জীবিত মুরগি</p>
                     <h3 id="dash-alive" class="text-2xl font-bold text-green-700 mt-1">০ টি</h3>
                     <p id="dash-dead" class="text-xs text-red-500 mt-1">মৃত্যু: ০ টি</p>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                    <p class="text-xs text-gray-500">মোট খাদ্য ব্যবহৃত</p>
+                <div class="farm-soft-card p-4 rounded-2xl">
+                    <p class="text-xs text-gray-600 font-medium">মোট খাদ্য ব্যবহৃত</p>
                     <h3 id="dash-feed" class="text-2xl font-bold text-amber-600 mt-1">০.০ কেজি</h3>
                     <p id="dash-bags" class="text-xs text-gray-500 mt-1">০.০ বস্তা (৫০ কেজি)</p>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                    <p class="text-xs text-gray-500">অটোমেটিক FCR</p>
-                    <h3 id="dash-fcr" class="text-2xl font-bold text-blue-700 mt-1">০.০০</h3>
+                <div class="farm-soft-card p-4 rounded-2xl">
+                    <p class="text-xs text-gray-600 font-medium">অটোমেটিক FCR</p>
+                    <h3 id="dash-fcr" class="text-2xl font-bold text-emerald-800 mt-1">০.০০</h3>
                     <p id="dash-avg-wt" class="text-xs text-gray-500 mt-1">গড় ওজন: ০ গ্রাম</p>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                    <p class="text-xs text-gray-500">ডিম উৎপাদন (লেয়ার/সোনালী)</p>
+                <div class="farm-soft-card p-4 rounded-2xl">
+                    <p class="text-xs text-gray-600 font-medium">ডিম উৎপাদন (লেয়ার/সোনালী)</p>
                     <h3 id="dash-eggs" class="text-2xl font-bold text-orange-600 mt-1">০ টি</h3>
                     <p id="dash-egg-rate" class="text-xs text-gray-500 mt-1">ভাঙা: ০ | উৎপাদন হার: ০%</p>
                 </div>
             </div>
 
             <!-- আর্থিক সারসংক্ষেপ -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-200 space-y-3">
-                <div class="flex flex-wrap justify-between items-center border-b pb-2">
+            <div class="farm-soft-card p-5 rounded-3xl space-y-3">
+                <div class="flex flex-wrap justify-between items-center border-b border-green-100 pb-2.5 gap-2">
                     <h3 class="font-bold text-green-950 text-base">💵 অটোমেটিক আর্থিক হিসাব ও উৎপাদন খরচ</h3>
-                    <span id="dash-cost-per-kg" class="text-sm font-bold bg-purple-100 text-purple-800 px-3 py-1 rounded-full">প্রতি কেজি খরচ: ৳ ০</span>
+                    <span id="dash-cost-per-kg" class="text-xs sm:text-sm font-bold bg-lime-200/80 text-green-950 px-3.5 py-1 rounded-full">প্রতি কেজি খরচ: ৳ ০</span>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
-                    <div class="bg-red-50 p-3 rounded-xl border border-red-100">
+                    <div class="bg-red-50/90 p-3.5 rounded-2xl border border-red-100">
                         <p class="text-xs text-red-700 font-medium">মোট খরচ</p>
                         <p id="dash-expense" class="text-lg font-bold text-red-700 mt-1">৳ ০</p>
                     </div>
-                    <div class="bg-green-50 p-3 rounded-xl border border-green-100">
-                        <p class="text-xs text-green-700 font-medium">মোট বিক্রি</p>
+                    <div class="bg-green-50/90 p-3.5 rounded-2xl border border-green-200">
+                        <p class="text-xs text-green-800 font-medium">মোট বিক্রি</p>
                         <p id="dash-income" class="text-lg font-bold text-green-700 mt-1">৳ ০</p>
                     </div>
-                    <div class="bg-orange-50 p-3 rounded-xl border border-orange-100">
-                        <p class="text-xs text-orange-800 font-medium">মোট বাকি পাওনা/দেনা</p>
+                    <div class="bg-amber-50/90 p-3.5 rounded-2xl border border-amber-200">
+                        <p class="text-xs text-amber-900 font-medium">মোট বাকি পাওনা/দেনা</p>
                         <p id="dash-due" class="text-lg font-bold text-orange-700 mt-1">৳ ০</p>
                     </div>
-                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
-                        <p class="text-xs text-amber-900 font-medium">নিট লাভ / ক্ষতি</p>
-                        <p id="dash-profit" class="text-lg font-bold text-amber-950 mt-1">৳ ০</p>
+                    <div class="bg-lime-100/80 p-3.5 rounded-2xl border border-lime-300">
+                        <p class="text-xs text-green-950 font-medium">নিট লাভ / ক্ষতি</p>
+                        <p id="dash-profit" class="text-lg font-bold text-green-950 mt-1">৳ ০</p>
                     </div>
                 </div>
             </div>
 
             <!-- গ্রোথ চার্ট -->
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100">
+            <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3 text-sm">📈 দৈনিক খাদ্য ও ওজন বৃদ্ধির চার্ট</h3>
                 <canvas id="growthChart" height="110"></canvas>
             </div>
@@ -154,122 +182,122 @@
 
         <!-- ২. দৈনিক লগ -->
         <section id="sec-daily" class="hidden space-y-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100">
+            <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3">📝 দৈনিক খাদ্য, মৃত্যু, ওজন ও ডিমের হিসাব</h3>
                 <form onsubmit="addDailyLog(event)" class="space-y-3">
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                         <div>
                             <label class="text-xs font-semibold text-gray-700">তারিখ</label>
-                            <input type="date" id="log-date" required class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="date" id="log-date" required class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">খাদ্য (কেজি)</label>
-                            <input type="number" step="0.1" id="log-feed" required placeholder="যেমন: ৩০.৫" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.1" id="log-feed" required placeholder="যেমন: ৩০.৫" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">মৃত মুরগি (টি)</label>
-                            <input type="number" id="log-mortality" value="0" min="0" required class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" id="log-mortality" value="0" min="0" required class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">গড় ওজন (গ্রামে)</label>
-                            <input type="number" id="log-weight" min="0" placeholder="যেমন: ১৪৫০" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" id="log-weight" min="0" placeholder="যেমন: ১৪৫০" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">সংগৃহীত ডিম (টি)</label>
-                            <input type="number" id="log-eggs" value="0" min="0" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" id="log-eggs" value="0" min="0" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">ভাঙা/নষ্ট ডিম (টি)</label>
-                            <input type="number" id="log-broken" value="0" min="0" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" id="log-broken" value="0" min="0" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                     </div>
                     <div>
                         <label class="text-xs font-semibold text-gray-700">বিশেষ নোট / অসুস্থতার লক্ষণ</label>
-                        <input type="text" id="log-notes" placeholder="যেমন: লিটার পরিবর্তন করা হয়েছে বা ঠান্ডা লেগেছে" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                        <input type="text" id="log-notes" placeholder="যেমন: লিটার পরিবর্তন করা হয়েছে বা ঠান্ডা লেগেছে" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                     </div>
-                    <button type="submit" class="w-full farm-gradient text-white font-bold py-2.5 rounded-lg shadow hover:opacity-95">দৈনিক হিসাব সেভ করুন</button>
+                    <button type="submit" class="w-full farm-gradient text-white font-bold py-3 rounded-full shadow-md hover:opacity-95 transition">দৈনিক হিসাব সেভ করুন</button>
                 </form>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                <h4 class="font-bold text-sm text-gray-800 mb-3">দৈনিক রেকর্ডের তালিকা</h4>
-                <div id="daily-list" class="divide-y text-sm"></div>
+            <div class="farm-soft-card p-4 rounded-3xl">
+                <h4 class="font-bold text-sm text-green-950 mb-3">দৈনিক রেকর্ডের তালিকা</h4>
+                <div id="daily-list" class="divide-y divide-green-100 text-sm"></div>
             </div>
         </section>
 
         <!-- ৩. আয়-ব্যয় ও বাকির খাতা -->
         <section id="sec-finance" class="hidden space-y-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100">
+            <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3">💰 আয়, ব্যয় ও বাকির হিসাব যুক্ত করুন</h3>
                 <form onsubmit="addTransaction(event)" class="space-y-3">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
                             <label class="text-xs font-semibold text-gray-700">লেনদেনের ধরন</label>
-                            <select id="tx-type" onchange="updateCategoryOptions()" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <select id="tx-type" onchange="updateCategoryOptions()" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                                 <option value="Expense">খরচ (Expense)</option>
                                 <option value="Income">বিক্রি / আয় (Income)</option>
                             </select>
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">খাত</label>
-                            <select id="tx-category" class="w-full border rounded-lg p-2 mt-1 text-sm"></select>
+                            <select id="tx-category" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm"></select>
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">ক্রেতা / ডিলার / দোকানের নাম</label>
-                            <input type="text" id="tx-party" placeholder="যেমন: করিম ফিড স্টোর" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="text" id="tx-party" placeholder="যেমন: করিম ফিড স্টোর" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">মোট টাকা (৳)</label>
-                            <input type="number" step="0.01" id="tx-amount" required placeholder="মোট টাকার পরিমাণ" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.01" id="tx-amount" required placeholder="মোট টাকার পরিমাণ" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">নগদ পরিশোধ / আদায় (৳)</label>
-                            <input type="number" step="0.01" id="tx-paid" placeholder="খালি রাখলে পূর্ণ টাকা ধরা হবে" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.01" id="tx-paid" placeholder="খালি রাখলে পূর্ণ টাকা ধরা হবে" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div id="sale-weight-div" class="hidden">
                             <label class="text-xs font-semibold text-gray-700">বিক্রিত মুরগির মোট ওজন (কেজি)</label>
-                            <input type="number" step="0.1" id="tx-weight" placeholder="মোট কেজি" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.1" id="tx-weight" placeholder="মোট কেজি" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                     </div>
-                    <button type="submit" class="w-full farm-gradient text-white font-bold py-2.5 rounded-lg shadow hover:opacity-95">হিসাব সেভ করুন</button>
+                    <button type="submit" class="w-full farm-gradient text-white font-bold py-3 rounded-full shadow-md hover:opacity-95 transition">হিসাব সেভ করুন</button>
                 </form>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                <h4 class="font-bold text-sm text-gray-800 mb-3">আয়-ব্যয় ও বাকির খাতা</h4>
-                <div id="tx-list" class="divide-y text-sm"></div>
+            <div class="farm-soft-card p-4 rounded-3xl">
+                <h4 class="font-bold text-sm text-green-950 mb-3">আয়-ব্যয় ও বাকির খাতা</h4>
+                <div id="tx-list" class="divide-y divide-green-100 text-sm"></div>
             </div>
         </section>
 
         <!-- ৪. ভ্যাকসিন -->
         <section id="sec-vaccine" class="hidden space-y-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100">
+            <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3">💉 ভ্যাকসিন ও মেডিসিন শিডিউল</h3>
                 <form onsubmit="addVaccine(event)" class="flex flex-wrap gap-2">
-                    <input type="text" id="vac-name" placeholder="ভ্যাকসিন/ওষুধের নাম (যেমন: গামবোরো / রানীক্ষেত)" required class="flex-1 min-w-[200px] border rounded-lg p-2 text-sm">
-                    <input type="date" id="vac-date" required class="border rounded-lg p-2 text-sm">
-                    <button type="submit" class="farm-gradient text-white px-5 py-2 rounded-lg font-bold text-sm">যোগ করুন</button>
+                    <input type="text" id="vac-name" placeholder="ভ্যাকসিন/ওষুধের নাম (যেমন: গামবোরো / রানীক্ষেত)" required class="flex-1 min-w-[200px] border border-green-200 bg-white rounded-2xl p-2.5 text-sm">
+                    <input type="date" id="vac-date" required class="border border-green-200 bg-white rounded-2xl p-2.5 text-sm">
+                    <button type="submit" class="farm-gradient text-white px-6 py-2.5 rounded-full font-bold text-sm shadow">যোগ করুন</button>
                 </form>
             </div>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                <h4 class="font-bold text-sm text-gray-800 mb-3">ভ্যাকসিন তালিকা</h4>
-                <div id="vac-list" class="divide-y text-sm"></div>
+            <div class="farm-soft-card p-4 rounded-3xl">
+                <h4 class="font-bold text-sm text-green-950 mb-3">ভ্যাকসিন তালিকা</h4>
+                <div id="vac-list" class="divide-y divide-green-100 text-sm"></div>
             </div>
         </section>
 
         <!-- ৫. ব্যাচসমূহ -->
         <section id="sec-batches" class="hidden space-y-4">
-            <div class="bg-white p-5 rounded-xl shadow-sm border border-green-100">
+            <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3">🐣 নতুন ব্যাচ চালু করুন</h3>
                 <form onsubmit="createBatch(event)" class="space-y-3">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
                         <div>
                             <label class="text-xs font-semibold text-gray-700">ব্যাচের নাম</label>
-                            <input type="text" id="b-name" placeholder="যেমন: ব্যাচ-০১ (নভেম্বর)" required class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="text" id="b-name" placeholder="যেমন: ব্যাচ-০১ (নভেম্বর)" required class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">মুরগির জাত</label>
-                            <select id="b-breed" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <select id="b-breed" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                                 <option value="ব্রয়লার">ব্রয়লার</option>
                                 <option value="সোনালী">সোনালী</option>
                                 <option value="লেয়ার">লেয়ার</option>
@@ -278,28 +306,28 @@
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">বাচ্চা তোলার তারিখ</label>
-                            <input type="date" id="b-date" required class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="date" id="b-date" required class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">মোট বাচ্চা (টি)</label>
-                            <input type="number" id="b-chicks" min="1" required placeholder="যেমন: ১০০০" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" id="b-chicks" min="1" required placeholder="যেমন: ১০০০" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">প্রতি বাচ্চার দাম (৳)</label>
-                            <input type="number" step="0.1" id="b-price" min="0" required placeholder="যেমন: ৪২" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.1" id="b-price" min="0" required placeholder="যেমন: ৪২" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-700">খাদ্যের বস্তার দাম (৫০ কেজি - ৳)</label>
-                            <input type="number" step="0.1" id="b-bag-price" min="0" placeholder="ঐচ্ছিক" class="w-full border rounded-lg p-2 mt-1 text-sm">
+                            <input type="number" step="0.1" id="b-bag-price" min="0" placeholder="ঐচ্ছিক" class="w-full border border-green-200 bg-white rounded-2xl p-2.5 mt-1 text-sm">
                         </div>
                     </div>
-                    <button type="submit" class="w-full farm-gradient text-white font-bold py-2.5 rounded-lg shadow hover:opacity-95">নতুন ব্যাচ তৈরি করুন</button>
+                    <button type="submit" class="w-full farm-gradient text-white font-bold py-3 rounded-full shadow-md hover:opacity-95 transition">নতুন ব্যাচ তৈরি করুন</button>
                 </form>
             </div>
 
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100">
-                <h4 class="font-bold text-sm text-gray-800 mb-3">সকল ব্যাচের তালিকা ও অবস্থা</h4>
-                <div id="all-batches-list" class="divide-y text-sm"></div>
+            <div class="farm-soft-card p-4 rounded-3xl">
+                <h4 class="font-bold text-sm text-green-950 mb-3">সকল ব্যাচের তালিকা ও অবস্থা</h4>
+                <div id="all-batches-list" class="divide-y divide-green-100 text-sm"></div>
             </div>
         </section>
 
@@ -360,11 +388,79 @@
         const APP_PIN = '2010';
         const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        const CACHE_BATCHES_KEY = 'arafat_poultry_batches_cache';
+        const CACHE_DETAIL_PREFIX = 'arafat_poultry_detail_';
+        const OFFLINE_QUEUE_KEY = 'arafat_poultry_offline_queue';
+
         let currentBatch = null;
         let currentLogs = [];
         let currentTxs = [];
         let currentVacs = [];
         let growthChartInstance = null;
+
+        function isOnline() {
+            return navigator.onLine;
+        }
+
+        function getQueue() {
+            try {
+                return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        function saveQueue(q) {
+            localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(q));
+            updateNetworkUI();
+        }
+
+        function updateNetworkUI() {
+            const online = isOnline();
+            const q = getQueue();
+            const badge = document.getElementById('net-status-badge');
+            const syncBtn = document.getElementById('sync-btn');
+
+            if (online) {
+                badge.innerText = 'অনলাইন';
+                badge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-lime-300 text-green-950';
+            } else {
+                badge.innerText = 'অফলাইন';
+                badge.className = 'text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-300 text-gray-950';
+            }
+
+            if (q.length > 0) {
+                syncBtn.classList.remove('hidden');
+                syncBtn.innerText = `🔄 সিঙ্ক (${q.length})`;
+            } else {
+                syncBtn.classList.add('hidden');
+            }
+        }
+
+        async function syncOfflineQueue() {
+            if (!isOnline()) return alert('ইন্টারনেট সংযোগ নেই। নেট এলে সিঙ্ক হবে।');
+            const q = getQueue();
+            if (!q.length) return;
+
+            const remaining = [];
+            for (const item of q) {
+                const { error } = await db.from(item.table).insert([item.payload]);
+                if (error) {
+                    remaining.push(item);
+                }
+            }
+            saveQueue(remaining);
+            await initApp();
+            if (remaining.length === 0) {
+                alert('অফলাইনের সব ডাটা সফলভাবে সিঙ্ক হয়েছে!');
+            }
+        }
+
+        window.addEventListener('online', () => {
+            updateNetworkUI();
+            syncOfflineQueue();
+        });
+        window.addEventListener('offline', updateNetworkUI);
 
         function checkInitialLock() {
             const unlocked = sessionStorage.getItem('poultry_unlocked') === 'true';
@@ -416,19 +512,13 @@
             document.getElementById('tab-' + tab).classList.add('tab-active');
         }
 
-        async function initApp() {
-            const { data: batches, error } = await db.from('batches').select('*').order('start_date', { ascending: false });
-            if (error) {
-                console.error(error);
-                return;
-            }
+        function renderBatchesList(batches) {
             const selector = document.getElementById('batchSelector');
             const allList = document.getElementById('all-batches-list');
 
             if (!batches || batches.length === 0) {
                 selector.innerHTML = '<option value="">কোনো ব্যাচ নেই</option>';
                 allList.innerHTML = '<p class="text-gray-500 py-2">এখনো কোনো ব্যাচ তৈরি করা হয়নি।</p>';
-                switchTab('batches');
                 return;
             }
 
@@ -449,25 +539,49 @@
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="text-xs px-2.5 py-1 rounded-full ${b.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-700'}">${b.status}</span>
-                        <button onclick="toggleBatchStatus('${b.id}', '${b.status}')" class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 px-2.5 py-1 rounded font-semibold">
+                        <button onclick="toggleBatchStatus('${b.id}', '${b.status}')" class="text-xs bg-amber-100 hover:bg-amber-200 text-amber-900 px-2.5 py-1 rounded-full font-semibold">
                             ${b.status === 'Active' ? 'ব্যাচ ক্লোজ করুন' : 'সচল করুন'}
                         </button>
                     </div>
                 </div>
             `).join('');
+        }
 
+        async function initApp() {
+            updateNetworkUI();
+            const cached = JSON.parse(localStorage.getItem(CACHE_BATCHES_KEY) || '[]');
+            if (cached.length > 0 && !isOnline()) {
+                renderBatchesList(cached);
+                loadBatchData();
+                return;
+            }
+
+            if (!isOnline()) {
+                renderBatchesList(cached);
+                return;
+            }
+
+            const { data: batches, error } = await db.from('batches').select('*').order('start_date', { ascending: false });
+            if (error) {
+                console.error(error);
+                if (cached.length > 0) {
+                    renderBatchesList(cached);
+                    loadBatchData();
+                }
+                return;
+            }
+
+            localStorage.setItem(CACHE_BATCHES_KEY, JSON.stringify(batches || []));
+            renderBatchesList(batches || []);
+
+            if (!batches || batches.length === 0) {
+                switchTab('batches');
+                return;
+            }
             loadBatchData();
         }
 
-        async function loadBatchData() {
-            const batchId = document.getElementById('batchSelector').value;
-            if (!batchId) return;
-
-            const { data: batch } = await db.from('batches').select('*').eq('id', batchId).single();
-            const { data: logs } = await db.from('daily_logs').select('*').eq('batch_id', batchId).order('log_date', { ascending: false });
-            const { data: txs } = await db.from('transactions').select('*').eq('batch_id', batchId).order('date', { ascending: false });
-            const { data: vacs } = await db.from('vaccines').select('*').eq('batch_id', batchId).order('due_date', { ascending: true });
-
+        function renderBatchView(batch, logs, txs, vacs) {
             currentBatch = batch;
             currentLogs = logs || [];
             currentTxs = txs || [];
@@ -547,7 +661,7 @@
             document.getElementById('daily-list').innerHTML = currentLogs.length ? currentLogs.map(l => `
                 <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
                     <div>
-                        <p class="font-semibold text-gray-800">📅 ${l.log_date}</p>
+                        <p class="font-semibold text-gray-800">📅 ${l.log_date} ${l._offline ? '<span class="text-[11px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">অফলাইন</span>' : ''}</p>
                         <p class="text-xs text-gray-600">খাদ্য: <b>${l.feed_kg} কেজি</b> | মৃত্যু: <b class="text-red-600">${l.mortality}</b> | ওজন: <b>${l.avg_weight_gm}g</b> | ডিম: <b>${l.eggs_collected || 0}</b></p>
                         ${l.notes ? `<p class="text-xs text-amber-800 mt-0.5">নোট: ${l.notes}</p>` : ''}
                     </div>
@@ -562,8 +676,8 @@
                 return `
                 <div class="py-2.5 flex flex-wrap justify-between items-center gap-2">
                     <div>
-                        <p class="font-semibold">${t.type === 'Income' ? '🟢' : '🔴'} ${t.category} — <span class="text-gray-600 font-normal">${t.party_name || 'সাধারণ'}</span></p>
-                        <p class="text-xs text-gray-500">তারিখ: ${t.date} ${t.sold_weight_kg > 0 ? `| ওজন: ${t.sold_weight_kg} কেজি` : ''} ${due > 0 ? `| <span class="text-orange-600 font-semibold">বাকি: ৳${due}</span>` : ''}</p>
+                        <p class="font-semibold">${t.type === 'Income' ? '🟢' : '🔴'} ${t.category} — <span class="text-gray-600 font-normal">${t.party_name || 'সাধারণ'}</span> ${t._offline ? '<span class="text-[11px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">অফলাইন</span>' : ''}</p>
+                        <p class="text-xs text-gray-500">তারিখ: ${t.date || todayStr} ${t.sold_weight_kg > 0 ? `| ওজন: ${t.sold_weight_kg} কেজি` : ''} ${due > 0 ? `| <span class="text-orange-600 font-semibold">বাকি: ৳${due}</span>` : ''}</p>
                     </div>
                     <div class="flex items-center gap-3">
                         <span class="font-bold ${t.type === 'Income' ? 'text-green-700' : 'text-red-600'}">৳ ${amt.toLocaleString()}</span>
@@ -576,14 +690,68 @@
                 <div class="py-2.5 flex justify-between items-center gap-2">
                     <label class="flex items-center gap-2 cursor-pointer ${v.is_done ? 'line-through text-gray-400' : ''}">
                         <input type="checkbox" ${v.is_done ? 'checked' : ''} onchange="toggleVaccine('${v.id}', ${!v.is_done})" class="w-4 h-4 accent-green-700">
-                        <span class="font-medium">${v.vaccine_name}</span>
+                        <span class="font-medium">${v.vaccine_name} ${v._offline ? '<span class="text-[11px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full">অফলাইন</span>' : ''}</span>
                     </label>
                     <div class="flex items-center gap-2">
-                        <span class="text-xs bg-amber-100 text-amber-900 px-2.5 py-1 rounded-full">${v.due_date}</span>
+                        <span class="text-xs bg-lime-100 text-green-950 font-semibold px-2.5 py-1 rounded-full">${v.due_date}</span>
                         <button onclick="deleteRow('vaccines', '${v.id}')" class="text-xs text-red-500 hover:underline">মুছুন</button>
                     </div>
                 </div>
             `).join('') : '<p class="text-gray-400 py-2">কোনো ভ্যাকসিন শিডিউল নেই।</p>';
+        }
+
+        function applyPendingQueueToBatchData(batchId, logs, txs, vacs) {
+            const q = getQueue();
+            const todayStr = new Date().toISOString().split('T')[0];
+            const outLogs = [...(logs || [])];
+            const outTxs = [...(txs || [])];
+            const outVacs = [...(vacs || [])];
+
+            for (const item of q) {
+                if (item.table === 'daily_logs' && item.payload.batch_id === batchId) {
+                    outLogs.unshift({ ...item.payload, id: item.localId, _offline: true });
+                }
+                if (item.table === 'transactions' && item.payload.batch_id === batchId) {
+                    outTxs.unshift({ ...item.payload, id: item.localId, date: todayStr, _offline: true });
+                }
+                if (item.table === 'vaccines' && item.payload.batch_id === batchId) {
+                    outVacs.push({ ...item.payload, id: item.localId, is_done: false, _offline: true });
+                }
+            }
+            return { outLogs, outTxs, outVacs };
+        }
+
+        async function loadBatchData() {
+            const batchId = document.getElementById('batchSelector').value;
+            if (!batchId) return;
+
+            const cacheKey = CACHE_DETAIL_PREFIX + batchId;
+            const cachedDetail = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+
+            if (!isOnline() && cachedDetail) {
+                const merged = applyPendingQueueToBatchData(batchId, cachedDetail.logs, cachedDetail.txs, cachedDetail.vacs);
+                renderBatchView(cachedDetail.batch, merged.outLogs, merged.outTxs, merged.outVacs);
+                return;
+            }
+
+            const { data: batch } = await db.from('batches').select('*').eq('id', batchId).single();
+            const { data: logs } = await db.from('daily_logs').select('*').eq('batch_id', batchId).order('log_date', { ascending: false });
+            const { data: txs } = await db.from('transactions').select('*').eq('batch_id', batchId).order('date', { ascending: false });
+            const { data: vacs } = await db.from('vaccines').select('*').eq('batch_id', batchId).order('due_date', { ascending: true });
+
+            if (batch) {
+                localStorage.setItem(cacheKey, JSON.stringify({
+                    batch,
+                    logs: logs || [],
+                    txs: txs || [],
+                    vacs: vacs || []
+                }));
+                const merged = applyPendingQueueToBatchData(batchId, logs || [], txs || [], vacs || []);
+                renderBatchView(batch, merged.outLogs, merged.outTxs, merged.outVacs);
+            } else if (cachedDetail) {
+                const merged = applyPendingQueueToBatchData(batchId, cachedDetail.logs, cachedDetail.txs, cachedDetail.vacs);
+                renderBatchView(cachedDetail.batch, merged.outLogs, merged.outTxs, merged.outVacs);
+            }
         }
 
         function prepareAndPrint() {
@@ -628,7 +796,7 @@
                 const due = Math.max(0, amt - paid);
                 return `
                 <tr>
-                    <td>${t.date}</td><td>${t.type === 'Income' ? 'আয়/বিক্রি' : 'খরচ'}</td>
+                    <td>${t.date || ''}</td><td>${t.type === 'Income' ? 'আয়/বিক্রি' : 'খরচ'}</td>
                     <td>${t.category}</td><td>${t.party_name || 'সাধারণ'}</td>
                     <td>৳${amt.toLocaleString()}</td><td>৳${paid.toLocaleString()}</td><td>৳${due.toLocaleString()}</td>
                 </tr>`;
@@ -672,7 +840,7 @@
 
         async function createBatch(e) {
             e.preventDefault();
-            const { error } = await db.from('batches').insert([{
+            const payload = {
                 batch_name: document.getElementById('b-name').value.trim(),
                 breed: document.getElementById('b-breed').value,
                 start_date: document.getElementById('b-date').value,
@@ -680,7 +848,33 @@
                 chick_price_per_piece: Number(document.getElementById('b-price').value),
                 feed_bag_price: Number(document.getElementById('b-bag-price').value || 0),
                 status: 'Active'
-            }]);
+            };
+
+            if (!isOnline()) {
+                const localId = 'local_' + Date.now();
+                const q = getQueue();
+                q.push({ table: 'batches', payload, localId });
+                saveQueue(q);
+
+                const cached = JSON.parse(localStorage.getItem(CACHE_BATCHES_KEY) || '[]');
+                const localBatch = { ...payload, id: localId };
+                cached.unshift(localBatch);
+                localStorage.setItem(CACHE_BATCHES_KEY, JSON.stringify(cached));
+                localStorage.setItem(CACHE_DETAIL_PREFIX + localId, JSON.stringify({
+                    batch: localBatch, logs: [], txs: [], vacs: []
+                }));
+
+                e.target.reset();
+                document.getElementById('b-date').valueAsDate = new Date();
+                renderBatchesList(cached);
+                document.getElementById('batchSelector').value = localId;
+                loadBatchData();
+                switchTab('dashboard');
+                alert('অফলাইনে ব্যাচ সেভ হয়েছে। নেট এলে সিঙ্ক হবে।');
+                return;
+            }
+
+            const { error } = await db.from('batches').insert([payload]);
             if (error) return alert('সেভ করতে সমস্যা হয়েছে: ' + error.message);
             e.target.reset();
             document.getElementById('b-date').valueAsDate = new Date();
@@ -689,6 +883,7 @@
         }
 
         async function toggleBatchStatus(id, currentStatus) {
+            if (!isOnline()) return alert('স্ট্যাটাস বদলাতে ইন্টারনেট সংযোগ প্রয়োজন।');
             const nextStatus = currentStatus === 'Active' ? 'Completed' : 'Active';
             await db.from('batches').update({ status: nextStatus }).eq('id', id);
             initApp();
@@ -697,7 +892,7 @@
         async function addDailyLog(e) {
             e.preventDefault();
             if (!currentBatch) return alert('আগে একটি ব্যাচ নির্বাচন করুন।');
-            const { error } = await db.from('daily_logs').insert([{
+            const payload = {
                 batch_id: currentBatch.id,
                 log_date: document.getElementById('log-date').value,
                 feed_kg: Number(document.getElementById('log-feed').value || 0),
@@ -706,7 +901,19 @@
                 eggs_collected: Number(document.getElementById('log-eggs').value || 0),
                 broken_eggs: Number(document.getElementById('log-broken').value || 0),
                 notes: document.getElementById('log-notes').value.trim()
-            }]);
+            };
+
+            if (!isOnline()) {
+                const q = getQueue();
+                q.push({ table: 'daily_logs', payload, localId: 'local_' + Date.now() });
+                saveQueue(q);
+                e.target.reset();
+                document.getElementById('log-date').valueAsDate = new Date();
+                loadBatchData();
+                return;
+            }
+
+            const { error } = await db.from('daily_logs').insert([payload]);
             if (error) return alert('সেভ করতে সমস্যা হয়েছে: ' + error.message);
             e.target.reset();
             document.getElementById('log-date').valueAsDate = new Date();
@@ -720,7 +927,7 @@
             const paidRaw = document.getElementById('tx-paid').value;
             const paidAmount = paidRaw === '' ? amount : Number(paidRaw);
 
-            const { error } = await db.from('transactions').insert([{
+            const payload = {
                 batch_id: currentBatch.id,
                 type: document.getElementById('tx-type').value,
                 category: document.getElementById('tx-category').value,
@@ -728,7 +935,19 @@
                 amount: amount,
                 paid_amount: paidAmount,
                 sold_weight_kg: Number(document.getElementById('tx-weight').value || 0)
-            }]);
+            };
+
+            if (!isOnline()) {
+                const q = getQueue();
+                q.push({ table: 'transactions', payload, localId: 'local_' + Date.now() });
+                saveQueue(q);
+                e.target.reset();
+                updateCategoryOptions();
+                loadBatchData();
+                return;
+            }
+
+            const { error } = await db.from('transactions').insert([payload]);
             if (error) return alert('সেভ করতে সমস্যা হয়েছে: ' + error.message);
             e.target.reset();
             updateCategoryOptions();
@@ -738,11 +957,23 @@
         async function addVaccine(e) {
             e.preventDefault();
             if (!currentBatch) return alert('আগে একটি ব্যাচ নির্বাচন করুন।');
-            const { error } = await db.from('vaccines').insert([{
+            const payload = {
                 batch_id: currentBatch.id,
                 vaccine_name: document.getElementById('vac-name').value.trim(),
                 due_date: document.getElementById('vac-date').value
-            }]);
+            };
+
+            if (!isOnline()) {
+                const q = getQueue();
+                q.push({ table: 'vaccines', payload, localId: 'local_' + Date.now() });
+                saveQueue(q);
+                e.target.reset();
+                document.getElementById('vac-date').valueAsDate = new Date();
+                loadBatchData();
+                return;
+            }
+
+            const { error } = await db.from('vaccines').insert([payload]);
             if (error) return alert('সেভ করতে সমস্যা হয়েছে: ' + error.message);
             e.target.reset();
             document.getElementById('vac-date').valueAsDate = new Date();
@@ -750,11 +981,13 @@
         }
 
         async function toggleVaccine(id, status) {
+            if (!isOnline()) return alert('ভ্যাকসিন টিক আপডেট করতে ইন্টারনেট সংযোগ প্রয়োজন।');
             await db.from('vaccines').update({ is_done: status }).eq('id', id);
             loadBatchData();
         }
 
         async function deleteRow(table, id) {
+            if (!isOnline()) return alert('ডাটা মুছতে ইন্টারনেট সংযোগ প্রয়োজন।');
             if (!confirm('আপনি কি এই এন্ট্রিটি মুছে ফেলতে চান?')) return;
             await db.from(table).delete().eq('id', id);
             loadBatchData();

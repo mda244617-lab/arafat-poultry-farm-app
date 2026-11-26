@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1b5e20">
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%231b5e20'/%3E%3Ccircle cx='64' cy='64' r='44' fill='%23f0fdf4'/%3E%3Ctext x='64' y='84' font-size='52' text-anchor='middle'%3E%F0%9F%90%94%3C/text%3E%3C/svg%3E">
     <title>আরাফাত পোল্ট্রি ফার্ম - আপনার খামার, আপনার হিসাব</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -52,11 +51,11 @@
     <!-- পিন লক স্ক্রিন -->
     <div id="pin-lock-screen" class="fixed inset-0 z-[100] farm-gradient flex items-center justify-center p-4 no-print">
         <div class="bg-white/95 backdrop-blur w-full max-w-sm rounded-3xl shadow-2xl border-2 border-lime-300 p-6 text-center space-y-4">
-            <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-24 h-24 mx-auto rounded-full object-cover shadow-md border-4 border-green-700">
+            <div class="w-24 h-24 mx-auto rounded-full bg-green-50 border-4 border-green-700 flex items-center justify-center text-5xl shadow-md">🐔</div>
             <div>
                 <h2 class="text-xl font-bold text-green-950">আরাফাত পোল্ট্রি ফার্ম</h2>
                 <span class="inline-block mt-1 bg-green-700 text-white text-xs font-semibold px-3.5 py-0.5 rounded-full">আপনার খামার, আপনার হিসাব</span>
-                <p class="text-xs text-gray-500 mt-2">খামারের হিসাব দেখতে ৪-সংখ্যার পিন দিন</p>
+                <p class="text-xs text-gray-500 mt-2">খামারের হিসাব দেখতে পিন কোড দিন</p>
             </div>
             <form onsubmit="unlockApp(event)" class="space-y-3">
                 <input type="password" id="pin-input" inputmode="numeric" maxlength="6" placeholder="পিন কোড লিখুন" required
@@ -71,7 +70,7 @@
     <header class="farm-gradient text-white p-3.5 sm:p-4 shadow-lg sticky top-0 z-50 no-print">
         <div class="max-w-5xl mx-auto flex flex-wrap justify-between items-center gap-3">
             <div class="flex items-center gap-2.5">
-                <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-12 h-12 rounded-full object-cover border-2 border-lime-300 shadow">
+                <div class="w-12 h-12 rounded-full bg-green-50 border-2 border-lime-300 flex items-center justify-center text-2xl shadow shrink-0">🐔</div>
                 <div>
                     <div class="flex items-center gap-2">
                         <h1 class="text-lg sm:text-xl font-bold leading-tight">আরাফাত পোল্ট্রি ফার্ম</h1>
@@ -110,7 +109,7 @@
 
             <div class="farm-soft-card p-4 sm:p-5 rounded-3xl flex flex-wrap justify-between items-center gap-3">
                 <div class="flex items-center gap-3">
-                    <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-12 h-12 rounded-full object-cover border-2 border-green-600 shadow-sm shrink-0">
+                    <div class="w-12 h-12 rounded-full bg-green-100 border-2 border-green-600 flex items-center justify-center text-2xl shadow-sm shrink-0">🌱</div>
                     <div>
                         <span class="text-xs text-green-800 font-semibold">বর্তমান ব্যাচের বয়স</span>
                         <h2 id="dash-age" class="text-2xl font-bold text-green-950">০ দিন</h2>
@@ -124,7 +123,6 @@
                 </div>
             </div>
 
-            <!-- মূল পরিসংখ্যান কার্ড -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                 <div class="farm-soft-card p-4 rounded-2xl">
                     <p class="text-xs text-gray-600 font-medium">জীবিত মুরগি</p>
@@ -148,7 +146,6 @@
                 </div>
             </div>
 
-            <!-- আর্থিক সারসংক্ষেপ -->
             <div class="farm-soft-card p-5 rounded-3xl space-y-3">
                 <div class="flex flex-wrap justify-between items-center border-b border-green-100 pb-2.5 gap-2">
                     <h3 class="font-bold text-green-950 text-base">💵 অটোমেটিক আর্থিক হিসাব ও উৎপাদন খরচ</h3>
@@ -174,7 +171,6 @@
                 </div>
             </div>
 
-            <!-- গ্রোথ চার্ট -->
             <div class="farm-soft-card p-5 rounded-3xl">
                 <h3 class="font-bold text-green-950 mb-3 text-sm">📈 দৈনিক খাদ্য ও ওজন বৃদ্ধির চার্ট</h3>
                 <canvas id="growthChart" height="110"></canvas>
@@ -337,12 +333,9 @@
     <!-- বিস্তারিত প্রিন্ট রিপোর্ট ভিউ -->
     <div id="print-report" class="p-6 space-y-5">
         <div class="border-b-2 border-gray-800 pb-3 flex justify-between items-end">
-            <div class="flex items-center gap-3">
-                <img src="logo.png" alt="আরাফাত পোল্ট্রি ফার্ম" class="w-14 h-14 rounded-full object-cover border border-gray-400">
-                <div>
-                    <h1 class="text-2xl font-bold">আরাফাত পোল্ট্রি ফার্ম — বিস্তারিত ব্যাচ রিপোর্ট</h1>
-                    <p id="pr-batch-info" class="text-sm text-gray-700 mt-1"></p>
-                </div>
+            <div>
+                <h1 class="text-2xl font-bold">আরাফাত পোল্ট্রি ফার্ম — বিস্তারিত ব্যাচ রিপোর্ট</h1>
+                <p id="pr-batch-info" class="text-sm text-gray-700 mt-1"></p>
             </div>
             <p id="pr-generated-at" class="text-xs text-gray-600"></p>
         </div>
@@ -381,9 +374,6 @@
     </div>
 
     <script>
-        // ==========================================
-        // আপনার Supabase URL, Anon Key এবং পিন কোড
-        // ==========================================
         const SUPABASE_URL = 'https://eydxejdtafyrvltbmuvt.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_rYFsWTVll7aBk2KZLau1Lw_NhqXATCP';
         const APP_PIN = '2010';
@@ -446,9 +436,7 @@
             const remaining = [];
             for (const item of q) {
                 const { error } = await db.from(item.table).insert([item.payload]);
-                if (error) {
-                    remaining.push(item);
-                }
+                if (error) remaining.push(item);
             }
             saveQueue(remaining);
             await initApp();
@@ -471,8 +459,7 @@
 
         function unlockApp(e) {
             e.preventDefault();
-            const entered = document.getElementById('pin-input').value.trim();
-            if (entered === APP_PIN) {
+            if (document.getElementById('pin-input').value.trim() === APP_PIN) {
                 sessionStorage.setItem('poultry_unlocked', 'true');
                 document.getElementById('pin-error').classList.add('hidden');
                 document.getElementById('pin-lock-screen').classList.add('hidden');
@@ -551,24 +538,16 @@
         async function initApp() {
             updateNetworkUI();
             const cached = JSON.parse(localStorage.getItem(CACHE_BATCHES_KEY) || '[]');
-            if (cached.length > 0 && !isOnline()) {
-                renderBatchesList(cached);
-                loadBatchData();
-                return;
-            }
-
             if (!isOnline()) {
                 renderBatchesList(cached);
+                if (cached.length > 0) loadBatchData();
                 return;
             }
 
             const { data: batches, error } = await db.from('batches').select('*').order('start_date', { ascending: false });
             if (error) {
-                console.error(error);
-                if (cached.length > 0) {
-                    renderBatchesList(cached);
-                    loadBatchData();
-                }
+                renderBatchesList(cached);
+                if (cached.length > 0) loadBatchData();
                 return;
             }
 
@@ -580,6 +559,27 @@
                 return;
             }
             loadBatchData();
+        }
+
+        function applyPendingQueueToBatchData(batchId, logs, txs, vacs) {
+            const q = getQueue();
+            const todayStr = new Date().toISOString().split('T')[0];
+            const outLogs = [...(logs || [])];
+            const outTxs = [...(txs || [])];
+            const outVacs = [...(vacs || [])];
+
+            for (const item of q) {
+                if (item.table === 'daily_logs' && item.payload.batch_id === batchId) {
+                    outLogs.unshift({ ...item.payload, id: item.localId, _offline: true });
+                }
+                if (item.table === 'transactions' && item.payload.batch_id === batchId) {
+                    outTxs.unshift({ ...item.payload, id: item.localId, date: todayStr, _offline: true });
+                }
+                if (item.table === 'vaccines' && item.payload.batch_id === batchId) {
+                    outVacs.push({ ...item.payload, id: item.localId, is_done: false, _offline: true });
+                }
+            }
+            return { outLogs, outTxs, outVacs };
         }
 
         function renderBatchView(batch, logs, txs, vacs) {
@@ -699,27 +699,6 @@
                     </div>
                 </div>
             `).join('') : '<p class="text-gray-400 py-2">কোনো ভ্যাকসিন শিডিউল নেই।</p>';
-        }
-
-        function applyPendingQueueToBatchData(batchId, logs, txs, vacs) {
-            const q = getQueue();
-            const todayStr = new Date().toISOString().split('T')[0];
-            const outLogs = [...(logs || [])];
-            const outTxs = [...(txs || [])];
-            const outVacs = [...(vacs || [])];
-
-            for (const item of q) {
-                if (item.table === 'daily_logs' && item.payload.batch_id === batchId) {
-                    outLogs.unshift({ ...item.payload, id: item.localId, _offline: true });
-                }
-                if (item.table === 'transactions' && item.payload.batch_id === batchId) {
-                    outTxs.unshift({ ...item.payload, id: item.localId, date: todayStr, _offline: true });
-                }
-                if (item.table === 'vaccines' && item.payload.batch_id === batchId) {
-                    outVacs.push({ ...item.payload, id: item.localId, is_done: false, _offline: true });
-                }
-            }
-            return { outLogs, outTxs, outVacs };
         }
 
         async function loadBatchData() {
@@ -996,12 +975,13 @@
 
         checkInitialLock();
         initApp();
+
         if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch((err) => {
-      console.error('SW registration failed:', err);
-    });
-  });
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch((err) => {
+                    console.error('SW registration failed:', err);
+                });
+            });
         }
     </script>
 </body>

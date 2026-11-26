@@ -1,14 +1,13 @@
-const CACHE_NAME = 'arafat-poultry-v1';
-const STATIC_ASSETS = [
+const CACHE_NAME = 'arafat-poultry-v2';
+const CORE_FILES = [
   './',
   './index.html',
-  './manifest.json',
-  './logo.png'
+  './manifest.json'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(CORE_FILES))
   );
   self.skipWaiting();
 });
@@ -31,12 +30,12 @@ self.addEventListener('fetch', (event) => {
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request)
-        .then((res) => {
-          if (res && res.status === 200 && res.type !== 'opaque') {
-            const copy = res.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        .then((response) => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
-          return res;
+          return response;
         })
         .catch(() => caches.match('./index.html'));
     })
